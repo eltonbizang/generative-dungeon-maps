@@ -12,19 +12,19 @@ class Maps:
     """
 
     def __new__(cls, *args, **kwargs):
-        obj = super().__new__(cls, *args, **kwargs)
-        obj.dim = (4, 4)
+        obj = super().__new__(cls)
+        obj.size = (4, 4)
         obj.permanently_closed_walls = set()
         obj.permanently_open_walls = set()
         return obj
 
-    def __init__(self, dim: tuple = (4, 4)):
-        self.dim = dim
-        n, m = self.dim
+    def __init__(self, size: tuple = (4, 4)):
+        self.size = size
+        n, m = self.size
         self._grid = np.zeros((2 * n + 1, 2 * m + 1), dtype=int)
         self._fill_unreachable_points()
         self._fill_external_walls()
-        self.box = np.zeros(dim)
+        self.box = np.zeros(size)
 
     def __setitem__(self, key, value):
         self.box[key] = value
@@ -38,7 +38,7 @@ class Maps:
         repr_ = "\n".join([
             '\t'.join([_char_map[value] for value in line]) for line in self._grid]
         )
-        return repr_
+        return "\n" + repr_
 
     def __contains__(self, coord):
         n, m = self.box.shape
@@ -151,7 +151,7 @@ class Maps:
         x, y = point
         potential_neighbours = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         neighbours = filter(lambda x: x in self, potential_neighbours)
-        return list(neighbours)
+        return set(neighbours)
 
     def random_path(self, startpoint, endpoint) -> list:
         """
