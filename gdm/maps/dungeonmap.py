@@ -1,4 +1,6 @@
-from base import *
+from typing import Tuple
+
+from gdm.maps.base import *
 from random import randint, random
 
 
@@ -25,6 +27,18 @@ class DungeonMaps(Maps):
     @staticmethod
     def generate(self, dim: Tuple[int, int]):
         raise NotImplementedError
+
+    @property
+    def starting_point(self) -> Tuple[int, int]:
+        return self._starting_point
+
+    @property
+    def ending_point(self) -> Tuple[int, int]:
+        return self._ending_point
+
+    @property
+    def treasure_point(self) -> Tuple[int, int]:
+        return self._treasure_point
 
     def _set_starting_point(self, point: Tuple[int, int] = None):
         if self._starting_point is not None:
@@ -78,7 +92,7 @@ class DungeonMaps(Maps):
         return keypoint
 
     def _random_point(self):
-        n, m = self.dim
+        n, m = self.size
         return randint(0, n - 1), randint(0, m - 1)
 
     def _ensure_path_between_keypoint(self):
@@ -108,7 +122,7 @@ class DungeonMaps(Maps):
 
     def _build_random_walls(self, p: float = 0.3):
         assert 0 <= p <= 1
-        n, m = self._key_dilatation(self.dim)
+        n, m = self._key_dilatation(self.size)
         for i in range(0, n):
             for j in range(0, m):
                 if not self._is_wall((i, j)):
