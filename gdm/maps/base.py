@@ -2,8 +2,9 @@ import numpy as np
 from random import choice
 from typing import Tuple
 
+_char_map = {-3: '+', -2: '—', -1: '|', 0: ' ', 1: 'I', 2: 'O', 3: 'T'}
 
-_char_map = {-3: '+', -2: '—', -1: '|', 0: '', 1: 'I', 2: 'O', 3: 'T'}
+__all__ = ["Maps", "BoxCoordError", "KeypointError"]
 
 
 class Maps:
@@ -134,10 +135,10 @@ class Maps:
         y = self._int_dilatation(y)
         if not self._is_box((x, y)):
             raise BoxCoordError(f"({point}) doesn't match a box coordinate")
-        return {"top": ((x - 1, y), _char_map[self._grid[(x - 1, y)]]),
-                "bottom": ((x + 1, y), _char_map[self._grid[(x + 1, y)]]),
-                "left": ((x, y - 1), _char_map[self._grid[(x, y - 1)]]),
-                "right": ((x, y + 1), _char_map[self._grid[(x, y + 1)]]), }
+        return {"top": ((x - 1, y), _char_map[self._grid[(x - 1, y)]].strip()),
+                "down": ((x + 1, y), _char_map[self._grid[(x + 1, y)]].strip()),
+                "left": ((x, y - 1), _char_map[self._grid[(x, y - 1)]].strip()),
+                "right": ((x, y + 1), _char_map[self._grid[(x, y + 1)]].strip()), }
 
     def wall_between(self, point_1, point_2) -> Tuple[int, int]:
         if point_2 not in self.neighbours(point_1):
@@ -194,6 +195,3 @@ class BoxCoordError(Exception):
 
 class KeypointError(Exception):
     pass
-
-
-__all__ = [Maps, BoxCoordError, KeypointError]

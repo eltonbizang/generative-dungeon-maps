@@ -18,7 +18,7 @@ class QTable(Q):
         self[self.current_state, self.current_action] += (self.alpha * target)
 
 
-def qlearning(q: Q, env, policy: Policy, discount_rate=0.7,
+def qlearning(env, q: Q, policy: Policy, discount_rate=0.7,
               num_episodes=10000, time_limit=np.inf,
               eval_frequency=1000, snapshot_frequency=100):
     gains = list()
@@ -96,5 +96,3 @@ def evaluation(policy, env, training=True, num_episodes=100, time_limit=100):
         print(f"\tAverage penalties per episode: {avg_penalties_per_episode}")
 
     return avg_timesteps_per_episode, avg_penalties_per_episode
-
-
