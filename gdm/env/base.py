@@ -55,3 +55,31 @@ class Env:
         :return:
         """
         raise NotImplementedError
+
+
+class Agent:
+    def __init__(self, values, policy):
+        self.values = values
+        self.observation = None
+        self._policy = policy
+        self._training = False
+        self._evaluation = None
+
+    def save(self):
+        """
+
+        :return:
+        """
+        raise NotImplementedError
+
+    def __str__(self):
+        raise NotImplementedError
+
+    def __repr__(self):
+        raise NotImplementedError
+
+    def learn(self):
+        raise NotImplementedError
+
+
+
